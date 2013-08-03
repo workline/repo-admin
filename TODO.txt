@@ -1,0 +1,7 @@
+-Consistency checker needs the changed repo item. (Probably through serialization.)
+-Instead of parent source new metaattribute: pointer attribute name (e.g. "parent", "accessRight") or ID
+
+Attribute person.attributes.get("organization") = x;
+person.attributes.get("status").metaAttributes.get("inheritence_source").value = x;
+
+  

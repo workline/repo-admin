@@ -16,7 +16,7 @@ public class RestService {
         boolean consistent;
 
         String repoDefinitionName = repoItem.getDefinition().getName();
-        ClientRequest request = new ClientRequest("http://localhost:8080/repo_consistency_checker/rest/" + consistencyCheckerId + "/" + repoDefinitionName);
+        ClientRequest request = new ClientRequest("http://localhost:8080/repo-consistency_checker/rest/" + consistencyCheckerId + "/" + repoDefinitionName);
         request.accept("application/json");
         request.body("application/json", repoItem);
 

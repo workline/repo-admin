@@ -27,8 +27,8 @@ public class MessagingService {
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             MessageProducer producer = session.createProducer(queue);
 
-            TextMessage message = session.createTextMessage("Attribute {" + attributeName + "} of repo item {" + repoItemId + "} has been changed from "
-                    + oldValue + " to " + newValue);
+            TextMessage message = session.createTextMessage("Attribute {" + attributeName + "} of repo item {" + repoItemId + "} has been changed from {"
+                    + oldValue + "} to {" + newValue + "}");
             producer.send(message);
         } catch (JMSException e) {
             throw new RuntimeException("Couldn't send text message!", e);

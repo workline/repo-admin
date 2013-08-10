@@ -35,7 +35,7 @@ public class RepoItemHandler {
         RepoItemAttribute repoItemAttribute = repoItem.getAttribute(attributeName);
         String inheritenceTypeAsString = (String) repoItemAttribute.getMetaAttribute(Constants.INHERITENCE_TYPE_META_ATTRIBUTE_NAME).getValue();
         EInheritenceType inheritenceType = EInheritenceType.valueOf(inheritenceTypeAsString);
-        Set<IValue<Object>> values = inheritenceType.getValues(this, repoItemAttribute);
+        Set<IValue<Object>> values = inheritenceType.getValues(repoItem, this, repoItemAttribute);
 
         return values;
     }
@@ -70,7 +70,7 @@ public class RepoItemHandler {
         Set<IValue<Object>> consistencyCheckerValues = getValues(repoItem, Constants.CONSISTENCY_CHECKER_ATTRIBUTE_NAME);
         for (IValue<Object> consistencyCheckerValue : consistencyCheckerValues) {
             String consistencyCheckerId = (String) consistencyCheckerValue.getValue();
-            boolean consistent = restService.checkConsistency(consistencyCheckerId, repoDefinitionName, repoItemId);
+            boolean consistent = restService.checkConsistency(consistencyCheckerId, repoItem);
             if (!consistent) {
                 throw new IllegalStateException(repoItemId + " of the " + repoDefinitionName + " repository is inconsistent!");
             }

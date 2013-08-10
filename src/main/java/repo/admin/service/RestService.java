@@ -7,16 +7,21 @@ import loggee.api.Logged;
 import org.jboss.resteasy.client.ClientRequest;
 import org.jboss.resteasy.client.ClientResponse;
 
+import vrds.model.RepoItem;
+
 @Logged
 @ApplicationScoped
 public class RestService {
-    public boolean checkConsistency(String consistencyCheckerId, String repoDefinitionName, Long repoItemId) {
+    public boolean checkConsistency(String consistencyCheckerId, RepoItem repoItem) {
         boolean consistent;
 
-        ClientRequest request = new ClientRequest("http://localhost:8080/repo_consistency_checker/rest/" + consistencyCheckerId + "/" + repoDefinitionName
-                + "/" + repoItemId);
+        String repoDefinitionName = repoItem.getDefinition().getName();
+        ClientRequest request = new ClientRequest("http://localhost:8080/repo_consistency_checker/rest/" + consistencyCheckerId + "/" + repoDefinitionName);
+        request.accept("application/json");
+        request.body("application/json", repoItem);
+
         try {
-            ClientResponse<Boolean> response = request.get(Boolean.class);
+            ClientResponse<Boolean> response = request.post(Boolean.class);
 
             consistent = response.getEntity();
         } catch (Exception e) {

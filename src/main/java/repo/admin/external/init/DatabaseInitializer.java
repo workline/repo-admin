@@ -21,7 +21,6 @@ import vrds.model.RepoAttributeDefinition;
 import vrds.model.RepoDefinition;
 import vrds.model.RepoItem;
 import vrds.model.RepoItemAttribute;
-import vrds.model.RepoItemValue;
 import vrds.model.StringValue;
 
 @Startup
@@ -171,10 +170,10 @@ public class DatabaseInitializer {
         johnSmithOrganization.setDefinition(personOrganizationDefinition);
         johnSmithOrganization.setValue(developersOrganization);
 
-        RepoItemAttribute johnSmithState = setAttribute(johnSmith, personStateDefinition, null, EInheritenceType.INHERIT, developersOrganization);
+        RepoItemAttribute johnSmithState = setAttribute(johnSmith, personStateDefinition, null, EInheritenceType.INHERIT, "organization");
 
         RepoItemAttribute johnSmithConsistencyChecker = setAttribute(johnSmith, personConsistencyCheckerDefinition, "personConsistencyChecker",
-                EInheritenceType.CUMULATE, developersOrganization);
+                EInheritenceType.CUMULATE, "organization");
 
         entityManager.persist(johnSmithName);
         entityManager.persist(johnSmithBirthPlace);
@@ -184,17 +183,17 @@ public class DatabaseInitializer {
         entityManager.persist(johnSmithConsistencyChecker);
     }
 
-    private RepoItemAttribute setAttribute(RepoItem repoItem, RepoAttributeDefinition stateDefinition, Object value, EInheritenceType inheritenceType,
-            RepoItem inheritenceSource) {
+    private RepoItemAttribute setAttribute(RepoItem repoItem, RepoAttributeDefinition definition, Object value, EInheritenceType inheritenceType,
+            String attributeNameReferencingInheritenceSource) {
 
         RepoItemAttribute attribute = new RepoItemAttribute();
 
         attribute.setRepoItem(repoItem);
-        attribute.setDefinition(stateDefinition);
+        attribute.setDefinition(definition);
         attribute.setValue(value);
 
         setInheritencyType(attribute, inheritenceType);
-        setInheritencySource(attribute, inheritenceSource);
+        setInheritencySource(attribute, attributeNameReferencingInheritenceSource);
 
         return attribute;
     }
@@ -214,17 +213,17 @@ public class DatabaseInitializer {
         entityManager.persist(inheritenceTypeAttribute);
     }
 
-    private void setInheritencySource(RepoItemAttribute attribute, RepoItem inheritenceSource) {
+    private void setInheritencySource(RepoItemAttribute attribute, String attributeNameReferencingInheritenceSource) {
         MetaAttribute inheritenceSourceAttribute = new MetaAttribute();
 
         inheritenceSourceAttribute.setDefinition(inheritenceSourceMetaAttributeDefinition);
         inheritenceSourceAttribute.setOwnerAttribute(attribute);
 
-        RepoItemValue inheritenceSourceValue = new RepoItemValue();
-        inheritenceSourceValue.setValue(inheritenceSource);
-        Set<RepoItemValue> inheritenceTypeValues = new HashSet<>(Arrays.asList(inheritenceSourceValue));
+        StringValue inheritenceSourceValue = new StringValue();
+        inheritenceSourceValue.setValue(attributeNameReferencingInheritenceSource);
+        Set<StringValue> inheritenceTypeValues = new HashSet<>(Arrays.asList(inheritenceSourceValue));
 
-        inheritenceSourceAttribute.setRepoItemValues(inheritenceTypeValues);
+        inheritenceSourceAttribute.setStringValues(inheritenceTypeValues);
 
         entityManager.persist(inheritenceSourceAttribute);
     }

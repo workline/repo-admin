@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import repo.admin.constants.Constants;
 import repo.admin.model.EInheritenceType;
 import repo.admin.model.ERepoItemState;
+import vrds.model.Attribute;
 import vrds.model.AttributeDefinition;
 import vrds.model.EAttributeType;
 import vrds.model.MetaAttribute;
@@ -21,7 +22,6 @@ import vrds.model.RepoAttributeDefinition;
 import vrds.model.RepoDefinition;
 import vrds.model.RepoItem;
 import vrds.model.RepoItemAttribute;
-import vrds.model.StringValue;
 
 @Startup
 @Singleton
@@ -51,7 +51,7 @@ public class DatabaseInitializer {
 
         inheritenceSourceMetaAttributeDefinition = new MetaAttributeDefinition();
         inheritenceSourceMetaAttributeDefinition.setName(Constants.INHERITENCE_SOURCE_META_ATTRIBUTE_NAME);
-        inheritenceSourceMetaAttributeDefinition.setType(EAttributeType.INTEGER);
+        inheritenceSourceMetaAttributeDefinition.setType(EAttributeType.ATTRIBUTE);
 
         entityManager.persist(inheritenceTypeMetaAttributeDefinition);
         entityManager.persist(inheritenceSourceMetaAttributeDefinition);
@@ -170,10 +170,10 @@ public class DatabaseInitializer {
         johnSmithOrganization.setDefinition(personOrganizationDefinition);
         johnSmithOrganization.setValue(developersOrganization);
 
-        RepoItemAttribute johnSmithState = setAttribute(johnSmith, personStateDefinition, null, EInheritenceType.INHERIT, "organization");
+        RepoItemAttribute johnSmithState = setAttribute(johnSmith, personStateDefinition, null, EInheritenceType.INHERIT, johnSmithOrganization);
 
         RepoItemAttribute johnSmithConsistencyChecker = setAttribute(johnSmith, personConsistencyCheckerDefinition, "personConsistencyChecker",
-                EInheritenceType.CUMULATE, "organization");
+                EInheritenceType.CUMULATE, johnSmithOrganization);
 
         entityManager.persist(johnSmithName);
         entityManager.persist(johnSmithBirthPlace);
@@ -184,7 +184,7 @@ public class DatabaseInitializer {
     }
 
     private RepoItemAttribute setAttribute(RepoItem repoItem, RepoAttributeDefinition definition, Object value, EInheritenceType inheritenceType,
-            String attributeNameReferencingInheritenceSource) {
+            Attribute attributeReferencingInheritenceSource) {
 
         RepoItemAttribute attribute = new RepoItemAttribute();
 
@@ -193,7 +193,7 @@ public class DatabaseInitializer {
         attribute.setValue(value);
 
         setInheritencyType(attribute, inheritenceType);
-        setInheritencySource(attribute, attributeNameReferencingInheritenceSource);
+        setInheritencySource(attribute, attributeReferencingInheritenceSource);
 
         return attribute;
     }
@@ -203,27 +203,17 @@ public class DatabaseInitializer {
 
         inheritenceTypeAttribute.setDefinition(inheritenceTypeMetaAttributeDefinition);
         inheritenceTypeAttribute.setOwnerAttribute(attribute);
-
-        StringValue inheritenceTypeValue = new StringValue();
-        inheritenceTypeValue.setValue(inheritenceType.toString());
-        Set<StringValue> inheritenceTypeValues = new HashSet<>(Arrays.asList(inheritenceTypeValue));
-
-        inheritenceTypeAttribute.setStringValues(inheritenceTypeValues);
+        inheritenceTypeAttribute.setValue(inheritenceType.toString());
 
         entityManager.persist(inheritenceTypeAttribute);
     }
 
-    private void setInheritencySource(RepoItemAttribute attribute, String attributeNameReferencingInheritenceSource) {
+    private void setInheritencySource(RepoItemAttribute attribute, Attribute attributeReferencingInheritenceSource) {
         MetaAttribute inheritenceSourceAttribute = new MetaAttribute();
 
         inheritenceSourceAttribute.setDefinition(inheritenceSourceMetaAttributeDefinition);
         inheritenceSourceAttribute.setOwnerAttribute(attribute);
-
-        StringValue inheritenceSourceValue = new StringValue();
-        inheritenceSourceValue.setValue(attributeNameReferencingInheritenceSource);
-        Set<StringValue> inheritenceTypeValues = new HashSet<>(Arrays.asList(inheritenceSourceValue));
-
-        inheritenceSourceAttribute.setStringValues(inheritenceTypeValues);
+        inheritenceSourceAttribute.setValue(attributeReferencingInheritenceSource);
 
         entityManager.persist(inheritenceSourceAttribute);
     }

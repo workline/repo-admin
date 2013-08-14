@@ -5,6 +5,7 @@ import java.util.Set;
 
 import repo.admin.constants.Constants;
 import repo.admin.service.RepoItemHandler;
+import vrds.model.Attribute;
 import vrds.model.IValue;
 import vrds.model.RepoItem;
 import vrds.model.RepoItemAttribute;
@@ -13,8 +14,8 @@ public enum EInheritenceType {
     INHERIT {
         @Override
         public Set<IValue<Object>> getValues(RepoItem childRepoItem, RepoItemHandler repoItemHandler, RepoItemAttribute attribute) {
-            String inheritenceSourceAttributeName = (String) attribute.getMetaAttribute(Constants.INHERITENCE_SOURCE_META_ATTRIBUTE_NAME).getValue();
-            RepoItem inheritenceSourceRepoItem = (RepoItem) childRepoItem.getValue(inheritenceSourceAttributeName);
+            Attribute inheritenceSourceAttribute = (Attribute) attribute.getMetaAttribute(Constants.INHERITENCE_SOURCE_META_ATTRIBUTE_NAME).getValue();
+            RepoItem inheritenceSourceRepoItem = (RepoItem) inheritenceSourceAttribute.getValue();
             Set<IValue<Object>> values = repoItemHandler.getValues(inheritenceSourceRepoItem, attribute.getDefinition().getName());
             return values;
         }

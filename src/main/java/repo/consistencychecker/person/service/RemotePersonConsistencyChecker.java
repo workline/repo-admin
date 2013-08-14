@@ -4,6 +4,6 @@ import vrds.model.RepoItem;
 
 public interface RemotePersonConsistencyChecker {
 
-	public abstract boolean checkConsistency(RepoItem person);
+    public abstract boolean checkConsistency(RepoItem person);
 
 }

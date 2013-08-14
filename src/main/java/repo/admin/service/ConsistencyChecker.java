@@ -4,7 +4,6 @@ import vrds.model.RepoItem;
 
 public interface ConsistencyChecker {
 
-	public abstract boolean checkConsistency(String consistencyCheckerId,
-			RepoItem repoItem);
+    public abstract boolean checkConsistency(String consistencyCheckerId, RepoItem repoItem);
 
 }

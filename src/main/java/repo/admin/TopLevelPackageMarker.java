@@ -1,6 +1,4 @@
 package repo.admin;
 
-public final class TopLevelPackageMarker {
-    private TopLevelPackageMarker() {
-    }
+public interface TopLevelPackageMarker {
 }

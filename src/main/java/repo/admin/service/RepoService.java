@@ -6,8 +6,7 @@ import javax.persistence.EntityManager;
 
 import loggee.api.Logged;
 import repo.admin.model.ERepoItemState;
-import vrds.model.RepoAttributeDefinition;
-import vrds.model.RepoDefinition;
+import vrds.model.EAttributeType;
 import vrds.model.RepoItem;
 import vrds.model.RepoItemAttribute;
 
@@ -33,26 +32,23 @@ public class RepoService {
     }
 
     public String createRandomPersonsM(int number) {
-        RepoDefinition personDefinition = entityManager.find(RepoDefinition.class, 2L);
-        RepoAttributeDefinition personNameDefinition = entityManager.find(RepoAttributeDefinition.class, 6L);
-        RepoAttributeDefinition personBirthPlaceDefinition = entityManager.find(RepoAttributeDefinition.class, 7L);
 
         String lastPerson = "";
         for (int i = 0; i < number; i++) {
             RepoItem johnSmith = new RepoItem();
-            johnSmith.setDefinition(personDefinition);
+            johnSmith.setRepoName("person");
             entityManager.persist(johnSmith);
 
             RepoItemAttribute johnSmithName = new RepoItemAttribute();
             johnSmithName.setRepoItem(johnSmith);
 
-            johnSmithName.setDefinition(personNameDefinition);
+            johnSmithName.setNameAndType("name", EAttributeType.STRING);
             johnSmithName.setValue("John Smith_" + i);
 
             RepoItemAttribute johnSmithBirthPlace = new RepoItemAttribute();
             johnSmithBirthPlace.setRepoItem(johnSmith);
 
-            johnSmithBirthPlace.setDefinition(personBirthPlaceDefinition);
+            johnSmithBirthPlace.setNameAndType("birthPlace", EAttributeType.STRING);
             johnSmithBirthPlace.setValue("Budapest_" + i);
 
             entityManager.persist(johnSmithName);

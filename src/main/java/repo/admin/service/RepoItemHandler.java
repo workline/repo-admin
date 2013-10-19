@@ -67,13 +67,13 @@ public class RepoItemHandler {
 
     public void checkConsistency(RepoItem repoItem) {
         Long repoItemId = repoItem.getId();
-        String repoDefinitionName = repoItem.getDefinition().getName();
+        String repoName = repoItem.getRepoName();
         Set<IValue<Object>> consistencyCheckerValues = getValues(repoItem, Constants.CONSISTENCY_CHECKER_ATTRIBUTE_NAME);
         for (IValue<Object> consistencyCheckerValue : consistencyCheckerValues) {
             String consistencyCheckerId = (String) consistencyCheckerValue.getValue();
             boolean consistent = consistencyChecker.checkConsistency(consistencyCheckerId, repoItem);
             if (!consistent) {
-                throw new IllegalStateException(repoItemId + " of the " + repoDefinitionName + " repository is inconsistent!");
+                throw new IllegalStateException(repoItemId + " of the " + repoName + " repository is inconsistent!");
             }
         }
     }

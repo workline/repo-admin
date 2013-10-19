@@ -17,8 +17,8 @@ public class RESTConstistencyChecker implements ConsistencyChecker {
     public boolean checkConsistency(String consistencyCheckerId, RepoItem repoItem) {
         boolean consistent;
 
-        String repoDefinitionName = repoItem.getDefinition().getName();
-        ClientRequest request = new ClientRequest("http://localhost:8080/repo-consistency_checker/rest/" + consistencyCheckerId + "/" + repoDefinitionName);
+        String repoName = repoItem.getRepoName();
+        ClientRequest request = new ClientRequest("http://localhost:8080/repo-consistency_checker/rest/" + consistencyCheckerId + "/" + repoName);
         request.accept("application/json");
         // request.body("application/json", repoItem);
 

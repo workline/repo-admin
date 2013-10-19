@@ -16,7 +16,7 @@ public enum EInheritenceType {
         public Set<IValue<Object>> getValues(RepoItem childRepoItem, RepoItemHandler repoItemHandler, RepoItemAttribute attribute) {
             Attribute inheritenceSourceAttribute = (Attribute) attribute.getMetaAttribute(Constants.INHERITENCE_SOURCE_META_ATTRIBUTE_NAME).getValue();
             RepoItem inheritenceSourceRepoItem = (RepoItem) inheritenceSourceAttribute.getValue();
-            Set<IValue<Object>> values = repoItemHandler.getValues(inheritenceSourceRepoItem, attribute.getDefinition().getName());
+            Set<IValue<Object>> values = repoItemHandler.getValues(inheritenceSourceRepoItem, attribute.getName());
             return values;
         }
     },

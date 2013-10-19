@@ -6,9 +6,6 @@
     <jta-data-source>java:jboss/datasources/RepoDS</jta-data-source>
 <!--     <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source> -->
     
-	<class>vrds.model.RepoDefinition</class>
-   	<class>vrds.model.RepoAttributeDefinition</class>
-   	<class>vrds.model.MetaAttributeDefinition</class>
 	<class>vrds.model.RepoItem</class>
 	<class>vrds.model.RepoItemAttribute</class>
 	<class>vrds.model.MetaAttribute</class>
